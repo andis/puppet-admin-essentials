@@ -18,16 +18,19 @@ class grml-zsh {
       unless => "${grml_key_installed}",
       require => Exec["gpg-recv-grml-key"];
 
-    # don't forget to run "aptitude update" after adding new repos
+    # don't forget to run "aptitude update" after adding new keys
     "apt-update":
       command => "aptitude update",
       path =>  ["/bin", "/usr/bin"],
+      require => File["grml.list"],
+      subscribe => Exec["apt-add-grml-key"],
       refreshonly => true;
 
     # delete grml gpg key after we have installed grml-debian-keyring
     "gpg-del-grml-key":
       command => "gpg --batch --yes --delete-key ${grml_key_id}",
       path =>  ["/usr/bin"],
+      subscribe => Package["grml-debian-keyring"],
       refreshonly => true;
   }
 
@@ -36,16 +39,17 @@ class grml-zsh {
       ensure => "directory";
 
     # add grml repos for debian
-    "${apt_dir}/sources.list.d/grml.list":
+    "grml.list":
+      path => "${apt_dir}/sources.list.d/grml.list",
       content => "deb     http://deb.grml.org/ grml-stable main
-deb-src http://deb.grml.org/ grml-stable main",
-      notify => Exec["apt-update"];
+deb-src http://deb.grml.org/ grml-stable main";
 
     "${apt_dir}/preferences.d":
       ensure => "directory";
 
     # install nothing but grml-etc-core and grml-debian-keyring from grml repo
-    "${apt_dir}/preferences.d/grml-pin":
+    "grml-pin":
+      path => "${apt_dir}/preferences.d/grml.pin",
       content => "Package: *
 Pin: release a=grml-stable
 Priority: 999
@@ -62,10 +66,9 @@ Priority: 400";
   package {
     "grml-debian-keyring":
       ensure => "latest",
-      notify => Exec["gpg-del-grml-key"],
       require => [ Exec["apt-add-grml-key"],
-                   File["${apt_dir}/preferences.d/grml-pin"],
-                   File["${apt_dir}/sources.list.d/grml.list"] ];
+                   File["grml-pin"],
+                   File["grml.list"] ];
 
     "grml-etc-core":
       ensure => "latest",
