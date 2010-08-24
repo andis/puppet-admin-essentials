@@ -1,9 +1,10 @@
 import "etckeeper.pp"
-include etckeeper
 
 class admin-essentials {
   $basepath = "modules/admin-essentials"
-  
+
+  include etckeeper
+
   package { mc: ensure => latest }
   package { [htop,strace,screen,inotify-tools,debconf-utils,rlwrap,zsh,multitail,git-core,molly-guard]: ensure => latest }
 
@@ -14,7 +15,7 @@ class admin-essentials {
       name => $operatingsystem ? {
         "Ubuntu" => "emacs23",
         "Debian" => "emacs22-nox",
-        "default" => "emacs-nox",
+        default => "emacs-nox",
       },
       ensure => latest,
   }
