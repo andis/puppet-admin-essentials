@@ -1,9 +1,11 @@
 import "etckeeper.pp"
+import "grml-zsh.pp"
 
 class admin-essentials {
   $basepath = "modules/admin-essentials"
 
   include etckeeper
+  include grml-zsh
 
   package { mc: ensure => latest }
   package { [htop,strace,screen,inotify-tools,debconf-utils,rlwrap,zsh,multitail,git-core,molly-guard]: ensure => latest }
@@ -14,7 +16,7 @@ class admin-essentials {
     "emacs":
       name => $operatingsystem ? {
         "Ubuntu" => "emacs23",
-        "Debian" => "emacs22-nox",
+        "Debian" => "emacs23-nox",
         default => "emacs-nox",
       },
       ensure => latest,
@@ -30,12 +32,6 @@ class admin-essentials {
       replace => false,
       require => Package["mc"];
     
-    "/root/.zshrc":
-      source => "puppet:///${basepath}/dot-zshrc";
-
-    "/root/.screenrc":
-      source => "puppet:///${basepath}/dot-screenrc";
-
     "/root/.emacs":
       source => "puppet:///${basepath}/dot-emacs";
 
