@@ -2,7 +2,7 @@ import "etckeeper.pp"
 include etckeeper
 
 class admin-essentials {
-  $thisclass = "admin-essentials"
+  $basepath = "modules/admin-essentials"
   
   package { mc: ensure => latest }
   package { [htop,strace,screen,inotify-tools,debconf-utils,rlwrap,zsh,multitail,git-core,molly-guard]: ensure => latest }
@@ -22,7 +22,7 @@ class admin-essentials {
       
   file {
     "/root/.mc":
-      source => "puppet:///${thisclass}/dot-midnight-commander",
+      source => "puppet:///${basepath}/dot-midnight-commander",
       owner => "root", group => "root",
       recurse => true,
       ensure => present,
@@ -30,13 +30,13 @@ class admin-essentials {
       require => Package["mc"];
     
     "/root/.zshrc":
-      source => "puppet:///${thisclass}/dot-zshrc";
+      source => "puppet:///${basepath}/dot-zshrc";
 
     "/root/.screenrc":
-      source => "puppet:///${thisclass}/dot-screenrc";
+      source => "puppet:///${basepath}/dot-screenrc";
 
     "/root/.emacs":
-      source => "puppet:///${thisclass}/dot-emacs";
+      source => "puppet:///${basepath}/dot-emacs";
 
     "/root/.ssh":
       ensure => "directory";
