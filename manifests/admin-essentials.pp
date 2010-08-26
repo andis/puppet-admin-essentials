@@ -8,9 +8,7 @@ class admin-essentials {
   include grml-zsh
 
   package { mc: ensure => latest }
-  package { [htop,strace,screen,inotify-tools,debconf-utils,rlwrap,zsh,multitail,git-core,molly-guard]: ensure => latest }
-
-  package { [lsof,less,bc,dc]: ensure => installed; }
+  package { [htop, strace, screen, inotify-tools, debconf-utils, rlwrap, zsh, multitail, git-core, molly-guard, lsof, less, bc, dc, psmisc, tcpdump, moreutils]: ensure => installed }
 
   package {
     "emacs":
