@@ -61,6 +61,10 @@ ControlPath ~/.ssh/master-%r@%h:%p
 ControlMaster auto\n",
       replace => false;
 
+    "/root/.zshrc.local":
+      content => "export EDITOR=emacs\n",
+      replace => false;
+
     "/etc/molly-guard/rc":
       content => "ALWAYS_QUERY_HOSTNAME=true\n",
       require => Package["molly-guard"];
