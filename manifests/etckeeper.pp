@@ -1,18 +1,19 @@
-class etckeeper {    
+class etckeeper {
   file {
     "/etc/etckeeper":
       ensure => directory;
     
-    "/etc/etckeeper/etckeeper.conf":
+    "etckeeper.conf":
+      path    => "/etc/etckeeper/etckeeper.conf",
       content => "VCS='git'
 HIGHLEVEL_PACKAGE_MANAGER=apt
-LOWLEVEL_PACKAGE_MANAGER=dpkg\n",
+LOWLEVEL_PACKAGE_MANAGER=dpkg\n";
   }
 
-  package { 
+  package {
     "etckeeper":
-      ensure => installed,
-      require => [ File["/etc/etckeeper/etckeeper.conf"],
+      ensure  => installed,
+      require => [ File["etckeeper.conf"],
         	   Package["git-core"] ];
   }
 }
