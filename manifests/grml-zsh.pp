@@ -49,8 +49,8 @@ deb-src http://deb.grml.org/ grml-stable main\n";
 
     # install nothing but grml-etc-core and grml-debian-keyring from grml repo
     "grml-pin":
-      path   => "${apt_dir}/preferences.d/grml.pin",
-      source => "puppet:///${basepath}/etc-apt-preferences.d-grml.pin"
+      path   => "${apt_dir}/preferences.d/grml-pin",
+      source => "puppet:///${basepath}/etc-apt-preferences.d-grml-pin"
   }
 
   package {
