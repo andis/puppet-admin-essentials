@@ -26,7 +26,8 @@ class admin-essentials {
      "psmisc",
      "tcpdump",
      "moreutils",
-     "ack-grep"]:
+     "ack-grep",
+     "tree"]:
        ensure => installed;
 
     "emacs":
