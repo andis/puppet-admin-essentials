@@ -25,7 +25,8 @@ class admin-essentials {
      "dc",
      "psmisc",
      "tcpdump",
-     "moreutils"]:
+     "moreutils",
+     "ack-grep"]:
        ensure => installed;
 
     "emacs":
@@ -71,5 +72,13 @@ ControlMaster auto\n",
       ensure  => present,
       require => Package["zsh"],
       shell   => "/bin/zsh";
+  }
+
+  exec {
+    "ack should link to ack-grep":
+      command => "ln -s /usr/bin/ack-grep /usr/bin/ack",
+      path    => ["/bin", "/usr/bin"],
+      unless  => "which ack",
+      require => Package["ack-grep"];
   }
 }
